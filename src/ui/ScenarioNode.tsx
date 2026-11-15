@@ -40,6 +40,7 @@ export function ScenarioNode({ data, selected }: NodeProps<ScenarioFlowNode>) {
     ? topRecipes(recipes, parent.state).map((e) => e.recipe.id)
     : []
   const added = addedByChange(scenario.change)
+  const summary = summarizeFilters(scenario.state)
 
   return (
     <article
@@ -56,15 +57,19 @@ export function ScenarioNode({ data, selected }: NodeProps<ScenarioFlowNode>) {
       <Handle type="target" position={Position.Left} />
 
       <div className="flex items-start justify-between gap-[5px]">
-        <h3 className="text-[13px] leading-[1.2] font-[750]">
+        <h3 className="truncate text-[13px] leading-[1.2] font-[750]">
           {isRoot ? 'Start' : `Change: ${changeLabel(scenario.change!)}`}
         </h3>
         {selected && (
           <span className="text-[9px] font-bold text-moss">Selected</span>
         )}
       </div>
-      <p className="my-[5px] text-[9px] leading-[1.4] text-[#6b7665]">
-        {summarizeFilters(scenario.state)}
+      {/* Clamped so a long ingredient list cannot push recipes out of view. */}
+      <p
+        className="my-[5px] line-clamp-2 text-[9px] leading-[1.4] text-[#6b7665]"
+        title={summary}
+      >
+        {summary}
       </p>
       {added && (
         <p className="mb-[3px] text-[9px] text-[#8f532a]">
@@ -81,7 +86,10 @@ export function ScenarioNode({ data, selected }: NodeProps<ScenarioFlowNode>) {
             !evaluate(e.recipe, parent.state)?.makeable
           return (
             <li key={e.recipe.id} className="border-t border-[#e8ebdf] py-[5px]">
-              <div className="text-[11px] leading-tight font-semibold">
+              <div
+                className="truncate text-[11px] leading-tight font-semibold"
+                title={e.recipe.name}
+              >
                 {e.recipe.name}
               </div>
               <div className="mt-0.5 flex flex-wrap gap-1 text-[9px] text-[#737a69]">

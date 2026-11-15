@@ -6,7 +6,8 @@ export type Direction = 'LR' | 'TB'
 export type Positions = Record<string, { x: number; y: number }>
 
 export const NODE_WIDTH = 300
-export const NODE_HEIGHT = 220
+/** Tall enough for a card to show its top three recipes without scrolling. */
+export const NODE_HEIGHT = 270
 /** In the stacked layout, how far each level is indented and spaced. */
 export const STACK_INDENT = 28
 export const STACK_GAP = 28
