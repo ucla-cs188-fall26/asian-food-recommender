@@ -1,4 +1,4 @@
-﻿@import 'tailwindcss';
+@import 'tailwindcss';
 
 /* Design tokens. Use them as Tailwind utilities, e.g. `bg-card`, `text-muted`. */
 @theme {

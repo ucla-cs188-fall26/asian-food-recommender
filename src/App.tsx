@@ -1,4 +1,4 @@
-﻿import { useEffect, useReducer, useState, useTransition } from 'react'
+import { useEffect, useReducer, useState, useTransition } from 'react'
 import { getRecipes } from './data/recipes'
 import type { RecipeLoad } from './data/recipes'
 import { SAMPLE_RECIPES } from './data/sampleRecipes'

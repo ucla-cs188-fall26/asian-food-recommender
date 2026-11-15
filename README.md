@@ -1,4 +1,4 @@
-﻿# Asian Recipe Explorer
+# Asian Recipe Explorer
 
 Explore recipes through a graph of small changes to your kitchen constraints.
 Each edge adds exactly one ingredient or piece of equipment, or raises the
