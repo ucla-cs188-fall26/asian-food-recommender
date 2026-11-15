@@ -7,7 +7,7 @@ import { evaluate, topRecipes } from '../domain/scoring'
 import { DIFFICULTY_LABELS } from '../domain/types'
 import type { Recipe } from '../domain/types'
 import type { GraphNode } from '../graph/graphState'
-import { NODE_HEIGHT, NODE_WIDTH } from '../graph/layout'
+import { NODE_HEIGHT, NODE_WIDTH, STACK_INDENT } from '../graph/layout'
 import type { Direction } from '../graph/layout'
 import { smallButton } from './styles'
 
@@ -52,10 +52,8 @@ export function ScenarioNode({ data, selected }: NodeProps<ScenarioFlowNode>) {
       ].join(' ')}
       style={{ width: NODE_WIDTH, height: NODE_HEIGHT }}
     >
-      <Handle
-        type="target"
-        position={direction === 'LR' ? Position.Left : Position.Top}
-      />
+      {/* Edges always arrive at the left side of a card. */}
+      <Handle type="target" position={Position.Left} />
 
       <div className="flex items-start justify-between gap-[5px]">
         <h3 className="text-[13px] leading-[1.2] font-[750]">
@@ -133,10 +131,18 @@ export function ScenarioNode({ data, selected }: NodeProps<ScenarioFlowNode>) {
         )}
       </div>
 
-      <Handle
-        type="source"
-        position={direction === 'LR' ? Position.Right : Position.Bottom}
-      />
+      {/* Tree: edges leave from the right. Stacked: they drop from the
+          bottom-left corner and run down the gutter beside the indented
+          children. */}
+      {direction === 'LR' ? (
+        <Handle type="source" position={Position.Right} />
+      ) : (
+        <Handle
+          type="source"
+          position={Position.Bottom}
+          style={{ left: STACK_INDENT / 2 }}
+        />
+      )}
     </article>
   )
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   Background,
   Controls,
@@ -10,7 +10,7 @@ import {
 import '@xyflow/react/dist/style.css'
 import type { Recipe } from '../domain/types'
 import type { GraphState } from '../graph/graphState'
-import { layoutGraph } from '../graph/layout'
+import { layoutGraph, layoutSize } from '../graph/layout'
 import type { Direction } from '../graph/layout'
 import { ScenarioNode } from './ScenarioNode'
 import type { ScenarioFlowNode } from './ScenarioNode'
@@ -32,7 +32,10 @@ const EDGE_LABEL_COLOR = '#354e37'
 const EDGE_LABEL_BACKGROUND = '#fffef9'
 const GRID_COLOR = '#d1d9c7'
 
-/** Top-to-bottom on narrow screens, left-to-right otherwise. */
+/** Space around the stacked column, in graph pixels. */
+const STACK_PADDING = 12
+
+/** One stacked column on narrow screens, a left-to-right tree otherwise. */
 function useDirection(): Direction {
   const [narrow, setNarrow] = useState(
     () => window.matchMedia('(max-width: 767px)').matches,
@@ -48,7 +51,9 @@ function useDirection(): Direction {
 
 function GraphCanvas({ graph, recipes, onExpand, onSelect }: FlowGraphProps) {
   const direction = useDirection()
+  const stacked = direction === 'TB'
   const positions = layoutGraph(graph, direction)
+  const size = layoutSize(positions)
 
   const nodes: ScenarioFlowNode[] = Object.values(graph.nodes).map(
     (scenario) => ({
@@ -68,6 +73,9 @@ function GraphCanvas({ graph, recipes, onExpand, onSelect }: FlowGraphProps) {
 
   const edges = graph.edges.map((edge) => ({
     ...edge,
+    // Stacked cards already name their change in the heading, and a label
+    // would not fit in the narrow gutter the edge runs through.
+    label: stacked ? undefined : edge.label,
     type: 'smoothstep',
     markerEnd: { type: MarkerType.ArrowClosed, color: EDGE_COLOR },
     style: { stroke: EDGE_COLOR, strokeWidth: 1.5 },
@@ -76,19 +84,49 @@ function GraphCanvas({ graph, recipes, onExpand, onSelect }: FlowGraphProps) {
     labelBgPadding: [6, 4] as [number, number],
   }))
 
-  // Re-fit the view whenever the graph gains or loses nodes or flips direction.
+  // Re-fit the view whenever the graph gains or loses nodes, flips direction,
+  // or its box changes size.
   const { fitView } = useReactFlow()
+  const container = useRef<HTMLDivElement>(null)
   const count = nodes.length
+  const padding = stacked ? 0 : 0.12
   useEffect(() => {
-    const frame = requestAnimationFrame(() => {
-      void fitView({ padding: 0.12, maxZoom: 1, duration: 200 })
-    })
-    return () => cancelAnimationFrame(frame)
-  }, [count, graph.rootId, direction, fitView])
+    let frame = 0
+    const fit = () => {
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(() => {
+        void fitView({ padding, maxZoom: 1, duration: 200 })
+      })
+    }
+    fit()
+    const observer = new ResizeObserver(fit)
+    if (container.current) observer.observe(container.current)
+    return () => {
+      observer.disconnect()
+      cancelAnimationFrame(frame)
+    }
+  }, [count, graph.rootId, direction, padding, fitView])
+
+  // Stacked: the box takes the column's own shape, so the whole graph shows at
+  // a readable size and the page scrolls through it. Tree: a fixed-height box
+  // the user pans and zooms inside.
+  const stackedWidth = size.width + 2 * STACK_PADDING
+  const stackedHeight = size.height + 2 * STACK_PADDING
 
   return (
     <div
-      className="h-[560px] w-full overflow-hidden rounded-lg border border-line-soft bg-canvas md:h-[590px]"
+      ref={container}
+      className={`w-full overflow-hidden rounded-lg border border-line-soft bg-canvas ${
+        stacked ? '' : 'h-[590px]'
+      }`}
+      style={
+        stacked
+          ? {
+              aspectRatio: `${stackedWidth} / ${stackedHeight}`,
+              maxHeight: stackedHeight,
+            }
+          : undefined
+      }
       aria-label="Recipe scenario graph"
     >
       <ReactFlow
@@ -98,21 +136,27 @@ function GraphCanvas({ graph, recipes, onExpand, onSelect }: FlowGraphProps) {
         onNodeClick={(_, node) => onSelect(node.id)}
         onNodeDoubleClick={(_, node) => onExpand(node.id)}
         fitView
-        fitViewOptions={{ padding: 0.12, maxZoom: 1 }}
+        fitViewOptions={{ padding, maxZoom: 1 }}
         minZoom={0.15}
         maxZoom={1.6}
+        panOnDrag={!stacked}
+        zoomOnScroll={!stacked}
+        zoomOnPinch={!stacked}
+        zoomOnDoubleClick={false}
+        preventScrolling={!stacked}
         nodesConnectable={false}
         nodesDraggable={false}
         deleteKeyCode={null}
       >
         <Background color={GRID_COLOR} gap={20} size={1} />
-        <Controls showInteractive={false} />
+        {!stacked && <Controls showInteractive={false} />}
       </ReactFlow>
     </div>
   )
 }
 
 export function FlowGraph(props: FlowGraphProps) {
+  const stacked = useDirection() === 'TB'
   return (
     <>
       {props.graph.message && (
@@ -124,8 +168,8 @@ export function FlowGraph(props: FlowGraphProps) {
         <GraphCanvas {...props} />
       </ReactFlowProvider>
       <p className="pt-2.5 text-[11px] text-muted">
-        Select a scenario for recipes · Explore to branch · Scroll to zoom,
-        drag to pan
+        Select a scenario for recipes · Explore to branch
+        {!stacked && ' · Scroll to zoom, drag to pan'}
       </p>
     </>
   )
