@@ -6,6 +6,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "port": 5173
+    },
+    {
+      "name": "dev-samples",
+      "runtimeExecutable": "env",
+      "runtimeArgs": ["VITE_SPOONACULAR_API_KEY=", "npm", "run", "dev", "--", "--port", "5190", "--strictPort"],
+      "port": 5190
     }
   ]
 }
