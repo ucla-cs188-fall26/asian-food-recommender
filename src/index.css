@@ -42,7 +42,6 @@ legend, .field-label { font-size: 13px; font-weight: 700; margin-bottom: 10px; d
 .section-heading { display: flex; gap: 16px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
 .data-status { font-size: 11px; font-weight: 600; color: #52705a; padding: 12px 0; }
 .notice { font-size: 12px; background: #fbf1d9; color: #795922; padding: 10px 12px; border-radius: 6px; margin-bottom: 12px; }
-.empty-panel { padding: 90px 20px; text-align: center; background: #f3f5ec; border-radius: 8px; }
 .form-error { color: #a23c24; font-size: 13px; }
 footer { padding: 28px 0; display: flex; gap: 12px; justify-content: space-between; font-size: 11px; color: #71796a; }
 footer a { color: inherit; text-decoration: underline; }
