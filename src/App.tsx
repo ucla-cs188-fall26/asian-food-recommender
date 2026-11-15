@@ -11,8 +11,18 @@ import { RecipeDetails } from './ui/RecipeDetails'
 import { rank } from './domain/scoring'
 import { summarizeFilters } from './domain/filters'
 import { changeLabel } from './domain/branches'
+import { useEffect } from 'react'
+import { SavedRecipes } from './ui/SavedRecipes'
+import { useBookmarks } from './ui/useBookmarks'
 
 export default function App() {
+  const [page, setPage] = useState(() => window.location.hash === '#saved' ? 'saved' : 'explore')
+  const { bookmarks, toggle, storageUnavailable, announcement } = useBookmarks()
+  useEffect(() => {
+    const onHashChange = () => setPage(window.location.hash === '#saved' ? 'saved' : 'explore')
+    window.addEventListener('hashchange', onHashChange)
+    return () => window.removeEventListener('hashchange', onHashChange)
+  }, [])
   const [filters, setFilters] = useState(DEFAULT_FILTERS)
   const [recipeLoad, setRecipeLoad] = useState<RecipeLoad>()
   const [graph, dispatch] = useReducer(graphReducer, DEFAULT_FILTERS, (initial) => createGraph(initial, SAMPLE_RECIPES))
@@ -28,7 +38,9 @@ export default function App() {
     })
   }
   return <div className="app">
-    <header className="page-header"><a className="brand" href="./">RECIPE / EXPLORER</a><span className="header-note">A little change. A new possibility.</span></header>
+    <header className="page-header"><a className="brand" href="#explore">RECIPE / EXPLORER</a><nav className="page-nav" aria-label="Main navigation"><a href="#explore" aria-current={page === 'explore' ? 'page' : undefined}>Explore</a><a href="#saved" aria-current={page === 'saved' ? 'page' : undefined}>Saved recipes <span className="saved-count">{bookmarks.length}</span></a></nav></header>
+    <p className="sr-only" role="status">{announcement}</p>
+    {page === 'saved' ? <SavedRecipes bookmarks={bookmarks} filters={filters} experience={experience} onExperienceChange={setExperience} onToggleBookmark={toggle} storageUnavailable={storageUnavailable} /> : <>
     <section className="intro"><p className="section-kicker">An open mind. A well-stocked kitchen.</p><h1>What's one change<br />away from dinner?</h1><p>Explore Asian recipes with what you have. Change one ingredient, tool, or difficulty limit at a time to see what opens up.</p></section>
     <main className="workspace">
       <aside><FilterForm initial={filters} ingredientOptions={ingredientOptions} isLoading={isPending} onSubmit={submit} /></aside>
@@ -39,9 +51,10 @@ export default function App() {
           {recipeLoad?.notice && <p className="notice">Data notice: {recipeLoad.notice}</p>}
           <FlowGraph graph={graph} recipes={recipeLoad?.recipes ?? SAMPLE_RECIPES} onExpand={(nodeId) => dispatch({ type: 'expand', nodeId, recipes: recipeLoad?.recipes ?? SAMPLE_RECIPES })} onSelect={(nodeId) => dispatch({ type: 'select', nodeId })} />
         </section>
-        <section className="details-section" aria-label="Selected scenario recipes"><p className="scenario-caption" aria-live="polite">Selected scenario: {graph.selectedId === graph.rootId ? 'Start' : changeLabel(graph.nodes[graph.selectedId].change!)} · {summarizeFilters(graph.nodes[graph.selectedId].state)}</p><RecipeDetails key={graph.selectedId} evaluations={rank(recipeLoad?.recipes ?? SAMPLE_RECIPES, graph.nodes[graph.selectedId].state)} experience={experience} onExperienceChange={setExperience} /></section>
+        <section className="details-section" aria-label="Selected scenario recipes"><p className="scenario-caption" aria-live="polite">Selected scenario: {graph.selectedId === graph.rootId ? 'Start' : changeLabel(graph.nodes[graph.selectedId].change!)} · {summarizeFilters(graph.nodes[graph.selectedId].state)}</p>{storageUnavailable && <p className="notice">Browser storage is unavailable. Bookmarks last for this session only.</p>}<RecipeDetails key={graph.selectedId} evaluations={rank(recipeLoad?.recipes ?? SAMPLE_RECIPES, graph.nodes[graph.selectedId].state)} experience={experience} onExperienceChange={setExperience} bookmarks={bookmarks} onToggleBookmark={toggle} /></section>
       </div>
     </main>
+    </>}
     <footer><span>Asian Recipe Explorer · CS 188</span><span>Live recipe data from the <a href="https://spoonacular.com/food-api">spoonacular API</a>.</span></footer>
   </div>
 }

@@ -535,6 +535,14 @@ selected node), `experience`, `onExperienceChange`.
   "Data and limitations" section (see section 5 below).
 - Confirm nothing temporary is left in `src/App.tsx`.
 
+## Bookmarks and saved recipe dashboard
+
+- Add a Save recipe / Remove bookmark toggle to recipe cards and a Saved recipes page at `#saved`.
+- Provide saved counts, recipe-name search, cuisine filtering, cooking details, and an empty state linking to Explore.
+- Keep bookmarks when switching scenarios or loading other cuisines. Evaluate saved recipes against the latest submitted kitchen filters, independent of selected cuisines.
+- Persist only local sample recipe IDs in browser storage. Live Spoonacular bookmarks and their recipe data remain in memory for the page session, as required by AGENTS.md. Explain this lifetime in the dashboard and on saved cards.
+- Handle unavailable or malformed browser storage without breaking the app. Test source/ID collisions, removal, persistence, and storage failures; run the standard project checks.
+
 ## 4. Stretch goals (only after Task 8)
 
 1. **Trace a recipe:** selecting a recipe outlines every node whose top N
