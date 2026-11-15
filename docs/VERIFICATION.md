@@ -35,15 +35,15 @@ was changed based on untested estimates.
 | Miso Soup with Tofu | 10 | Wakame soak can overlap preparation and water heating; low heat after miso is explicit. |
 | Teriyaki Chicken | 25 | 13–15 min pan/sauce stages leave preparation time. Review juices-run-clear wording. |
 | Kimchi Fried Rice | 15 | Assumes cooked, cold rice; timing is tight if eggs are not cooked in parallel. |
-| Tteokbokki | 20 | Hard rice cakes need 10 min soaking plus 9–11 min simmering and preparation/heating; total may understate elapsed time. |
+| Tteokbokki | 30 | Raised from 20: 10 min soaking plus 9–11 min simmering, preparation and heating. Estimate from the steps; not test-cooked. |
 | Gamja Jorim | 25 | 15–19 min cooking plus cutting is plausible; use fork-tender cue. |
 | Dubu Jorim | 25 | About 16–17 min cooking plus prep; thin potato slices matter for the 8 min simmer. |
 | Pad Kra Pao | 15 | Assumes cooked rice; review ground chicken doneness wording. High-heat aromatics have a short 15–20 second stage. |
 | Thai Green Curry | 30 | Gentle simmer and vegetable cues are explicit; review chicken doneness and optional shrimp substitution instructions. |
 | Thai Omelette | 10 | Assumes cooked rice; review instruction to pour eggs from a height into hot oil. |
 | Lemongrass Chicken | 25 | 10 min marinade plus 7–8 min cooking leaves little preparation time; review chicken doneness wording. |
-| Goi Cuon | 25 | Description says no-cook but noodles are boiled. Shrimp is specified cooked; chicken substitution lacks a cooking instruction. Resolve before using that substitution in a demo. |
-| Thit Kho | 75 | Sequential timed stages total 75–76 min before preparation/heating; boiling eggs in parallel helps, but total needs test-cooking. |
+| Goi Cuon | 25 | Description no longer says no-cook (the noodles are boiled). The chicken substitute for shrimp was removed because it had no cooking instruction; tofu remains. |
+| Thit Kho | 90 | Raised from 75: timed stages total 75–76 min before preparation and heating. Estimate from the steps; not test-cooked. |
 | Dal Tadka | 35 | Tempering explicitly runs in parallel with lentils; total is plausible. |
 | Aloo Gobi | 35 | 24–26 min cooking leaves limited prep time; keep medium-low heat after potatoes enter. |
 | Oven Tandoori-Style Chicken | 50 | 15 min marinade plus 25–30 min roasting leaves 5–10 min for prep; preheat can overlap marinade. Review juices-run-clear wording. |

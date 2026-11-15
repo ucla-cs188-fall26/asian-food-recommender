@@ -342,7 +342,7 @@ const DRAFTS: Draft[] = [
     name: 'Tteokbokki (Spicy Rice Cakes)',
     cuisine: 'Korean',
     description: 'Chewy rice cakes simmered in a sweet and spicy gochujang sauce.',
-    minutes: 20,
+    minutes: 30,
     equipment: ['stove'],
     ingredients: [
       ['300 g', 'rice cake'],
@@ -621,7 +621,8 @@ const DRAFTS: Draft[] = [
   {
     name: 'Goi Cuon (Fresh Summer Rolls)',
     cuisine: 'Vietnamese',
-    description: 'No-cook rice paper rolls with shrimp, noodles and herbs.',
+    description:
+      'Fresh rice paper rolls with shrimp, noodles and herbs. Only the noodles are cooked.',
     minutes: 25,
     equipment: ['stove'],
     ingredients: [
@@ -637,7 +638,7 @@ const DRAFTS: Draft[] = [
       ['2 tbsp', 'hoisin sauce'],
       ['1 tbsp', 'peanut butter'],
     ],
-    substitutions: { shrimp: ['tofu', 'chicken breast'], mint: ['thai basil'] },
+    substitutions: { shrimp: ['tofu'], mint: ['thai basil'] },
     steps: [
       [
         'Boil the vermicelli for 3-4 minutes, until soft with no hard centre, then rinse under cold water and drain.',
@@ -662,7 +663,7 @@ const DRAFTS: Draft[] = [
     name: 'Thit Kho (Caramelised Pork and Eggs)',
     cuisine: 'Vietnamese',
     description: 'Pork belly and boiled eggs braised slowly in coconut water and fish sauce.',
-    minutes: 75,
+    minutes: 90,
     equipment: ['stove'],
     ingredients: [
       ['500 g', 'pork belly'],
