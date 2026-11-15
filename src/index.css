@@ -98,3 +98,4 @@ footer a { color: inherit; text-decoration: underline; }
 .show-all { margin-top: 16px; }
 @media (max-width: 1100px) { .recipe-grid { grid-template-columns: minmax(0, 1fr); } .details-section .section-heading { flex-direction: column; align-items: start; } }
 @media (max-width: 767px) { .graph-canvas { height: 560px; } }
+.scenario-caption { font-size: 12px; line-height: 1.6; color: #64765c; border-bottom: 1px solid #e0e5d6; padding-bottom: 14px; margin-bottom: 20px; overflow-wrap: anywhere; }

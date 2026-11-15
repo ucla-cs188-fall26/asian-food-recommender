@@ -6,6 +6,11 @@ import { DEFAULT_FILTERS } from './domain/filters'
 import type { FilterState } from './domain/filters'
 import { createGraph, graphReducer, MAX_DEPTH, MAX_NODES } from './graph/graphState'
 import { FilterForm } from './ui/FilterForm'
+import { FlowGraph } from './ui/FlowGraph'
+import { RecipeDetails } from './ui/RecipeDetails'
+import { rank } from './domain/scoring'
+import { summarizeFilters } from './domain/filters'
+import { changeLabel } from './domain/branches'
 
 export default function App() {
   const [filters, setFilters] = useState(DEFAULT_FILTERS)
@@ -32,9 +37,9 @@ export default function App() {
           <p className="hint">Up to {MAX_NODES} scenarios, {MAX_DEPTH} changes deep.</p>
           <p className="data-status" role="status">{isPending ? 'Loading recipes…' : `${recipeLoad?.recipes.length ?? SAMPLE_RECIPES.filter((r) => filters.cuisines.includes(r.cuisine)).length} recipes · ${recipeLoad?.source === 'spoonacular' ? 'Live data' : 'Sample collection'}`}</p>
           {recipeLoad?.notice && <p className="notice">Data notice: {recipeLoad.notice}</p>}
-          <div className="empty-panel">Graph ready: {Object.keys(graph.nodes).length} scenarios. The interactive view is coming next.</div>
+          <FlowGraph graph={graph} recipes={recipeLoad?.recipes ?? SAMPLE_RECIPES} onExpand={(nodeId) => dispatch({ type: 'expand', nodeId, recipes: recipeLoad?.recipes ?? SAMPLE_RECIPES })} onSelect={(nodeId) => dispatch({ type: 'select', nodeId })} />
         </section>
-        <section className="details-section"><h2>Recipes in the selected scenario</h2><label><input type="checkbox" checked={experience === 'experienced'} onChange={(e) => setExperience(e.target.checked ? 'experienced' : 'beginner')} />Concise steps</label><p>Select a scenario to see its recipes.</p></section>
+        <section className="details-section" aria-label="Selected scenario recipes"><p className="scenario-caption" aria-live="polite">Selected scenario: {graph.selectedId === graph.rootId ? 'Start' : changeLabel(graph.nodes[graph.selectedId].change!)} · {summarizeFilters(graph.nodes[graph.selectedId].state)}</p><RecipeDetails key={graph.selectedId} evaluations={rank(recipeLoad?.recipes ?? SAMPLE_RECIPES, graph.nodes[graph.selectedId].state)} experience={experience} onExperienceChange={setExperience} /></section>
       </div>
     </main>
     <footer><span>Asian Recipe Explorer · CS 188</span><span>Live recipe data from the <a href="https://spoonacular.com/food-api">spoonacular API</a>.</span></footer>
