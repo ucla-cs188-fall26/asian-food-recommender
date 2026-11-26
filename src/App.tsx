@@ -210,7 +210,7 @@ export default function App() {
                 >
                   Selected scenario:{' '}
                   {graph.selectedId === graph.rootId
-                    ? 'Start'
+                    ? 'Your kitchen (start)'
                     : changeLabel(selected.change!)}{' '}
                   · {summarizeFilters(selected.state)}
                 </p>

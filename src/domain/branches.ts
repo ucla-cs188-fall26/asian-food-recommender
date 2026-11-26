@@ -30,8 +30,8 @@ export function applyChange(state: FilterState, change: Change): FilterState {
 
 export function changeLabel(change: Change): string {
   if (change.kind === 'add-ingredient') return `Add ${change.ingredient}`
-  if (change.kind === 'add-equipment') return `Add ${change.equipment}`
-  return `Allow ${DIFFICULTY_LABELS[change.to].toLowerCase()} difficulty`
+  if (change.kind === 'add-equipment') return `Use ${change.equipment}`
+  return `Try ${DIFFICULTY_LABELS[change.to].toLowerCase()} recipes`
 }
 
 export function suggestChanges(recipes: readonly Recipe[], state: FilterState, limit = MAX_SUGGESTIONS): Suggestion[] {

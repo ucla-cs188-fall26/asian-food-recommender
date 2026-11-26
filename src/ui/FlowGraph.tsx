@@ -14,7 +14,7 @@ import { layoutGraph, layoutSize } from '../graph/layout'
 import type { Direction } from '../graph/layout'
 import { ScenarioNode } from './ScenarioNode'
 import type { ScenarioFlowNode } from './ScenarioNode'
-import { notice } from './styles'
+import { notice, smallButton } from './styles'
 
 interface FlowGraphProps {
   graph: GraphState
@@ -114,7 +114,30 @@ function GraphCanvas({ graph, recipes, onExpand, onSelect }: FlowGraphProps) {
   const stackedHeight = size.height + 2 * STACK_PADDING
 
   return (
-    <div
+    <>
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+        <p className="max-w-[480px] text-xs leading-relaxed text-muted">
+          Begin at <strong className="text-moss">Your kitchen</strong>. Follow
+          a branch to see what one change unlocks. Select any card to see recipes
+          below.
+        </p>
+        <button
+          type="button"
+          className={smallButton}
+          onClick={() => {
+            onSelect(graph.rootId)
+            void fitView({
+              nodes: [{ id: graph.rootId }],
+              padding: 0.3,
+              maxZoom: 1,
+              duration: 200,
+            })
+          }}
+        >
+          Back to start
+        </button>
+      </div>
+      <div
       ref={container}
       className={`w-full overflow-hidden rounded-lg border border-line-soft bg-canvas ${
         stacked ? '' : 'h-[590px]'
@@ -151,7 +174,8 @@ function GraphCanvas({ graph, recipes, onExpand, onSelect }: FlowGraphProps) {
         <Background color={GRID_COLOR} gap={20} size={1} />
         {!stacked && <Controls showInteractive={false} />}
       </ReactFlow>
-    </div>
+      </div>
+    </>
   )
 }
 
@@ -168,8 +192,8 @@ export function FlowGraph(props: FlowGraphProps) {
         <GraphCanvas {...props} />
       </ReactFlowProvider>
       <p className="pt-2.5 text-[11px] text-muted">
-        Select a scenario for recipes · Explore to branch
-        {!stacked && ' · Scroll to zoom, drag to pan'}
+        Choose “Show next changes” on a card to explore further.
+        {!stacked && ' Scroll to zoom; drag to move the map.'}
       </p>
     </>
   )

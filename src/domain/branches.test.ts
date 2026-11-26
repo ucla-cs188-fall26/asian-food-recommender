@@ -12,8 +12,8 @@ it('reveals the braised tofu recipe by adding potato', () => {
   expect(suggestion?.newlyMakeable.map((r) => r.name)).toContain('Dubu Jorim (Braised Tofu with Egg and Potato)')
 })
 it('suggests equipment and only one difficulty level', () => {
-  expect(suggestChanges([fixture], state)[0].label).toBe('Add oven')
-  expect(suggestChanges([{ ...fixture, requiredEquipment: [], difficulty: 2 }], state)[0].label).toBe('Allow medium difficulty')
+  expect(suggestChanges([fixture], state)[0].label).toBe('Use oven')
+  expect(suggestChanges([{ ...fixture, requiredEquipment: [], difficulty: 2 }], state)[0].label).toBe('Try medium recipes')
   expect(suggestChanges([{ ...fixture, requiredEquipment: [], difficulty: 3 }], state)).toEqual([])
 })
 it('changes exactly one field and produces unique new states', () => {

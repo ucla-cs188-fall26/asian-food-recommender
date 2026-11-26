@@ -1,7 +1,6 @@
 import { Handle, Position } from '@xyflow/react'
 import type { Node, NodeProps } from '@xyflow/react'
 import { changeLabel } from '../domain/branches'
-import type { Change } from '../domain/branches'
 import { summarizeFilters } from '../domain/filters'
 import { evaluate, topRecipes } from '../domain/scoring'
 import { DIFFICULTY_LABELS } from '../domain/types'
@@ -22,14 +21,6 @@ export type ScenarioFlowNode = Node<
   'scenario'
 >
 
-/** The one thing this node's change added, e.g. "potato" or "Medium". */
-function addedByChange(change?: Change): string | undefined {
-  if (!change) return undefined
-  if (change.kind === 'add-ingredient') return change.ingredient
-  if (change.kind === 'add-equipment') return change.equipment
-  return DIFFICULTY_LABELS[change.to]
-}
-
 const badge = 'rounded-[3px] px-[3px]'
 
 export function ScenarioNode({ data, selected }: NodeProps<ScenarioFlowNode>) {
@@ -39,26 +30,31 @@ export function ScenarioNode({ data, selected }: NodeProps<ScenarioFlowNode>) {
   const parentTopIds = parent
     ? topRecipes(recipes, parent.state).map((e) => e.recipe.id)
     : []
-  const added = addedByChange(scenario.change)
   const summary = summarizeFilters(scenario.state)
 
   return (
     <article
       className={[
-        'flex flex-col rounded-[9px] bg-card p-3 text-[11px] text-ink shadow-[0_3px_10px_#263c3210]',
+        'flex flex-col rounded-[9px] p-3 text-[11px] text-ink shadow-[0_3px_10px_#263c3210]',
         isRoot
-          ? 'border-4 border-double border-[#597650]'
-          : 'border border-[#acbca4]',
+          ? 'border-2 border-[#597650] bg-sage'
+          : 'border border-[#acbca4] bg-card',
         selected ? 'outline-3 outline-offset-2 outline-moss' : '',
       ].join(' ')}
       style={{ width: NODE_WIDTH, height: NODE_HEIGHT }}
     >
       {/* Edges always arrive at the left side of a card. */}
-      <Handle type="target" position={Position.Left} />
+      {!isRoot && <Handle type="target" position={Position.Left} />}
+
+      {isRoot && (
+        <p className="mb-1 text-[10px] font-extrabold uppercase tracking-wide text-moss">
+          Start here
+        </p>
+      )}
 
       <div className="flex items-start justify-between gap-[5px]">
         <h3 className="truncate text-[13px] leading-[1.2] font-[750]">
-          {isRoot ? 'Start' : `Change: ${changeLabel(scenario.change!)}`}
+          {isRoot ? 'Your kitchen' : changeLabel(scenario.change!)}
         </h3>
         {selected && (
           <span className="text-[9px] font-bold text-moss">Selected</span>
@@ -71,9 +67,9 @@ export function ScenarioNode({ data, selected }: NodeProps<ScenarioFlowNode>) {
       >
         {summary}
       </p>
-      {added && (
-        <p className="mb-[3px] text-[9px] text-[#8f532a]">
-          <strong>{added}</strong> (new)
+      {isRoot && (
+        <p className="mb-1 text-[10px] text-moss">
+          What you have now. Follow a branch to try one change.
         </p>
       )}
 
@@ -95,7 +91,9 @@ export function ScenarioNode({ data, selected }: NodeProps<ScenarioFlowNode>) {
               <div className="mt-0.5 flex flex-wrap gap-1 text-[9px] text-[#737a69]">
                 {DIFFICULTY_LABELS[e.recipe.difficulty]} ·{' '}
                 <span className={e.makeable ? 'font-[750] text-ready' : ''}>
-                  {e.makeable ? 'Ready' : `Missing ${e.changesNeeded}`}
+                  {e.makeable
+                    ? 'Ready to cook'
+                    : `${e.changesNeeded} ${e.changesNeeded === 1 ? 'change' : 'changes'} away`}
                 </span>
                 {isNew && (
                   <span className={`${badge} bg-[#f1ead2] text-[#785323]`}>
@@ -123,7 +121,7 @@ export function ScenarioNode({ data, selected }: NodeProps<ScenarioFlowNode>) {
       <div className="border-t border-line-soft pt-[5px]">
         {scenario.expanded ? (
           <p className="text-[9px] leading-tight text-[#67795f]">
-            {scenario.note ?? 'Explored'}
+            {scenario.note ?? 'Changes shown'}
           </p>
         ) : (
           <button
@@ -134,7 +132,7 @@ export function ScenarioNode({ data, selected }: NodeProps<ScenarioFlowNode>) {
               onExpand(scenario.id)
             }}
           >
-            Explore changes
+            Show next changes
           </button>
         )}
       </div>
