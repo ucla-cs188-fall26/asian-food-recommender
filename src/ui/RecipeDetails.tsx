@@ -34,7 +34,7 @@ interface RecipeCardProps {
   onToggleBookmark: (recipe: Recipe) => void
 }
 
-function RecipeCard({
+export function RecipeCard({
   evaluation,
   experience,
   saved,
@@ -57,8 +57,8 @@ function RecipeCard({
           }`}
         >
           {evaluation.makeable
-            ? 'Ready'
-            : `Missing ${evaluation.changesNeeded}`}
+            ? 'Ready to cook'
+            : `${evaluation.changesNeeded} ${evaluation.changesNeeded === 1 ? 'change' : 'changes'} away`}
         </span>
       </div>
 
