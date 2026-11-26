@@ -1,4 +1,6 @@
-# Asian Recipe Explorer
+# WOKSTAR 
+
+<img src="https://i.imgur.com/1f1pRv7.png" alt="Alt text" width="200" />
 
 Explore recipes through a graph of small changes to your kitchen constraints.
 Each edge adds exactly one ingredient or piece of equipment, or raises the
