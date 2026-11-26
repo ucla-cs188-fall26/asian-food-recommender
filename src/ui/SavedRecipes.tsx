@@ -96,7 +96,7 @@ export function SavedRecipes({
       )}
 
       {!bookmarks.length ? (
-        <section className="rounded-xl border border-dashed border-[#acbca4] bg-card px-6 py-14 text-center">
+        <section className="rounded-xl border border-dashed border-[#8a8581] bg-card px-6 py-14 text-center">
           <span className="text-[42px] text-kicker" aria-hidden="true">
             ☆
           </span>

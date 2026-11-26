@@ -47,13 +47,13 @@ function RecipeCard({
 
   return (
     <article className="rounded-lg border border-line-soft p-[18px] text-xs [overflow-wrap:anywhere]">
-      <div className="flex items-center justify-between gap-2.5 text-[10px] text-[#687960]">
+      <div className="flex items-center justify-between gap-2.5 text-[10px] text-[#625d59]">
         {recipe.cuisine} / {DIFFICULTY_LABELS[recipe.difficulty]}
         <span
           className={`rounded px-1.5 py-[3px] text-[10px] whitespace-nowrap ${
             evaluation.makeable
-              ? 'bg-[#e5efdf] text-[#2a603c]'
-              : 'bg-[#f4eddc] text-[#865d28]'
+              ? 'bg-[#eeece9] text-[#242424]'
+              : 'bg-[#fff1e9] text-[#8c3521]'
           }`}
         >
           {evaluation.makeable
@@ -62,7 +62,7 @@ function RecipeCard({
         </span>
       </div>
 
-      <h3 className="my-3 font-serif text-[21px] leading-tight">
+      <h3 className="my-3 font-sans text-[21px] leading-tight font-extrabold tracking-tight">
         {recipe.name}
       </h3>
       {recipe.description && (
@@ -72,7 +72,7 @@ function RecipeCard({
       <div className="my-3 flex flex-wrap items-center gap-2">
         <button
           type="button"
-          className={`${button} aria-pressed:border-[#7d9871] aria-pressed:bg-sage-strong aria-pressed:text-[#244c36]`}
+          className={`${button} aria-pressed:border-[#c51e2c] aria-pressed:bg-sage-strong aria-pressed:text-[#a51521]`}
           aria-pressed={saved}
           aria-label={`${saved ? 'Remove bookmark for' : 'Save recipe'} ${recipe.name}`}
           onClick={() => onToggleBookmark(recipe)}
@@ -88,7 +88,7 @@ function RecipeCard({
         )}
       </div>
 
-      <ul className="list-disc pl-4 leading-[1.65] text-[#53674e]">
+      <ul className="list-disc pl-4 leading-[1.65] text-[#504b47]">
         {evaluation.reasons.map((reason) => (
           <li key={reason}>{reason}</li>
         ))}
@@ -100,7 +100,7 @@ function RecipeCard({
         </summary>
 
         {recipe.listedMinutes !== undefined && (
-          <p className="mt-3 text-[#737a69]">
+          <p className="mt-3 text-[#625d59]">
             Listed time: {recipe.listedMinutes} min
             {recipe.source === 'spoonacular' &&
               ' (as given by the source; often a placeholder)'}
@@ -188,7 +188,7 @@ export function RecipeDetails({
           </h2>
         </div>
         <fieldset className="flex shrink-0 gap-2.5">
-          <legend className="mb-[5px] text-[10px] text-[#737a69]">
+          <legend className="mb-[5px] text-[10px] text-[#625d59]">
             Step detail
           </legend>
           {(['beginner', 'experienced'] as const).map((value) => (

@@ -27,10 +27,10 @@ const nodeTypes = { scenario: ScenarioNode }
 
 // React Flow styles edges through props, not class names, so these colours
 // repeat the `--color-*` tokens from index.css.
-const EDGE_COLOR = '#70866c'
-const EDGE_LABEL_COLOR = '#354e37'
-const EDGE_LABEL_BACKGROUND = '#fffef9'
-const GRID_COLOR = '#d1d9c7'
+const EDGE_COLOR = '#c51e2c'
+const EDGE_LABEL_COLOR = '#141414'
+const EDGE_LABEL_BACKGROUND = '#ffffff'
+const GRID_COLOR = '#dedad6'
 
 /** Space around the stacked column, in graph pixels. */
 const STACK_PADDING = 12

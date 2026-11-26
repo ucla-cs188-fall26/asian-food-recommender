@@ -13,6 +13,7 @@ import {
   MAX_NODES,
 } from './graph/graphState'
 import { FilterForm } from './ui/FilterForm'
+import { Brand } from './ui/Brand'
 import { FlowGraph } from './ui/FlowGraph'
 import { Intro } from './ui/Intro'
 import { RecipeDetails } from './ui/RecipeDetails'
@@ -36,7 +37,7 @@ function currentPage(): Page {
 }
 
 const navLink =
-  'rounded-[7px] p-2 text-[#52674d] no-underline md:px-3 md:py-[9px] aria-[current=page]:bg-sage-strong aria-[current=page]:font-bold aria-[current=page]:text-[#244c36]'
+  'rounded-full px-3 py-2 font-bold text-ink no-underline transition-colors hover:bg-sage md:px-5 md:py-2.5 aria-[current=page]:bg-ink aria-[current=page]:text-card'
 
 export default function App() {
   const [page, setPage] = useState<Page>(currentPage)
@@ -86,13 +87,8 @@ export default function App() {
 
   return (
     <div className="mx-auto max-w-[1600px] px-4 md:px-9">
-      <header className="flex min-h-[76px] flex-wrap items-center justify-between gap-3 border-b border-[#d7ddce] py-3.5 md:h-[76px] md:flex-nowrap md:gap-5 md:py-0">
-        <a
-          className="text-sm font-extrabold tracking-[.12em] no-underline"
-          href="#explore"
-        >
-          RECIPE / EXPLORER
-        </a>
+      <header className="flex min-h-[88px] flex-wrap items-center justify-between gap-3 border-b-2 border-ink bg-card px-4 py-3 md:px-6">
+        <Brand />
         <nav
           className="flex items-center gap-2 text-[13px]"
           aria-label="Main navigation"
@@ -110,7 +106,7 @@ export default function App() {
             aria-current={page === 'saved' ? 'page' : undefined}
           >
             Saved recipes{' '}
-            <span className="ml-[3px] inline-block rounded-xl bg-card px-1.5 py-px">
+            <span className="ml-1 inline-block rounded-full bg-brand px-2 py-px text-white">
               {bookmarks.length}
             </span>
           </a>
@@ -132,12 +128,12 @@ export default function App() {
       ) : (
         <>
           <Intro
-            kicker="An open mind. A well-stocked kitchen."
+            kicker="Big flavor. Small changes."
             title={
               <>
                 What's one change
                 <br />
-                away from dinner?
+                away from <span className="text-forest">dinner?</span>
               </>
             }
           >
@@ -180,7 +176,7 @@ export default function App() {
                   Up to {MAX_NODES} scenarios, {MAX_DEPTH} changes deep.
                 </p>
                 <p
-                  className="py-3 text-[11px] font-semibold text-[#52705a]"
+                  className="py-3 text-[11px] font-semibold text-[#625d59]"
                   role="status"
                 >
                   {isPending
@@ -205,7 +201,7 @@ export default function App() {
                 aria-label="Selected scenario recipes"
               >
                 <p
-                  className="mb-5 border-b border-line-soft pb-3.5 text-xs leading-[1.6] text-[#64765c] [overflow-wrap:anywhere]"
+                  className="mb-5 border-b border-line-soft pb-3.5 text-xs leading-[1.6] text-[#625d59] [overflow-wrap:anywhere]"
                   aria-live="polite"
                 >
                   Selected scenario:{' '}
@@ -235,7 +231,7 @@ export default function App() {
       )}
 
       <footer className="flex flex-col justify-between gap-3 py-7 text-[11px] text-muted md:flex-row">
-        <span>Asian Recipe Explorer · CS 188</span>
+        <span className="font-bold uppercase tracking-wider">Wokstar · Big flavor. Small changes.</span>
         <span>
           Live recipe data from the{' '}
           <a className="underline" href="https://spoonacular.com/food-api">

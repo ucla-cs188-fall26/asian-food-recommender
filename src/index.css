@@ -2,33 +2,46 @@
 
 /* Design tokens. Use them as Tailwind utilities, e.g. `bg-card`, `text-muted`. */
 @theme {
-  --font-sans: 'Segoe UI', system-ui, sans-serif;
-  --font-serif: Georgia, serif;
+  --font-sans: 'Segoe UI', Arial, system-ui, sans-serif;
+  --font-serif: 'Arial Black', 'Segoe UI', Arial, sans-serif;
 
-  --color-ink: #253b32;
-  --color-card: #fffef9;
-  --color-canvas: #f4f6ee;
-  --color-line: #d8dece;
-  --color-line-soft: #e0e5d6;
-  --color-line-strong: #c3ccbc;
-  --color-muted: #71796a;
-  --color-subtle: #657061;
-  --color-kicker: #65806b;
-  --color-moss: #32604a;
-  --color-forest: #28553e;
-  --color-forest-dark: #1c4230;
-  --color-sage: #edf1e5;
-  --color-sage-strong: #e5eddd;
-  --color-ready: #276444;
-  --color-ready-bg: #e3efdd;
-  --color-warn: #795922;
-  --color-warn-bg: #fbf1d9;
-  --color-focus: #be672f;
+  --color-ink: #141414;
+  --color-card: #ffffff;
+  --color-canvas: #f8f7f5;
+  --color-line: #292929;
+  --color-line-soft: #e4e1de;
+  --color-line-strong: #8a8581;
+  --color-muted: #625d59;
+  --color-subtle: #504b47;
+  --color-kicker: #c51e2c;
+  --color-moss: #bf1b29;
+  --color-forest: #c51e2c;
+  --color-forest-dark: #a51521;
+  --color-sage: #fff1f1;
+  --color-sage-strong: #ffe2e4;
+  --color-ready: #242424;
+  --color-ready-bg: #eeece9;
+  --color-warn: #8c3521;
+  --color-warn-bg: #fff1e9;
+  --color-focus: #c51e2c;
+  --color-brand: #ff3038;
 }
 
 @layer base {
   html {
     font-synthesis: none;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  ::selection {
+    background: #ffd4d7;
+    color: #141414;
   }
 
   :where(button, input, select, a, summary):focus-visible {
@@ -39,5 +52,66 @@
   input[type='checkbox'],
   input[type='radio'] {
     accent-color: var(--color-moss);
+  }
+}
+
+/* Display the supplied artwork without its generous outer white margins. */
+.brand-wordmark {
+  position: relative;
+  display: block;
+  width: 180px;
+  height: 54px;
+  overflow: hidden;
+  background: white;
+}
+
+.brand-wordmark img,
+.brand-art img {
+  position: absolute;
+  width: 200%;
+  max-width: none;
+  height: auto;
+  left: -50%;
+}
+
+.brand-wordmark img {
+  top: -193%;
+}
+
+.brand-art {
+  position: relative;
+  width: clamp(180px, 22vw, 290px);
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: white;
+  transform: rotate(-4deg);
+}
+
+.brand-art img {
+  top: -58%;
+}
+
+.brand-heading {
+  font-family: var(--font-serif);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.react-flow__controls {
+  border: 1px solid var(--color-ink);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 3px 3px 0 #141414;
+}
+
+.react-flow__handle {
+  background: var(--color-brand);
+  border-color: white;
+}
+
+@media (max-width: 639px) {
+  .brand-wordmark {
+    width: 140px;
+    height: 42px;
   }
 }

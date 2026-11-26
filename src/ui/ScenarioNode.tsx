@@ -35,10 +35,10 @@ export function ScenarioNode({ data, selected }: NodeProps<ScenarioFlowNode>) {
   return (
     <article
       className={[
-        'flex flex-col rounded-[9px] p-3 text-[11px] text-ink shadow-[0_3px_10px_#263c3210]',
+        'flex flex-col rounded-[9px] p-3 text-[11px] text-ink shadow-[0_3px_10px_#14141410]',
         isRoot
-          ? 'border-2 border-[#597650] bg-sage'
-          : 'border border-[#acbca4] bg-card',
+          ? 'border-2 border-[#c51e2c] bg-sage'
+          : 'border border-[#8a8581] bg-card',
         selected ? 'outline-3 outline-offset-2 outline-moss' : '',
       ].join(' ')}
       style={{ width: NODE_WIDTH, height: NODE_HEIGHT }}
@@ -62,7 +62,7 @@ export function ScenarioNode({ data, selected }: NodeProps<ScenarioFlowNode>) {
       </div>
       {/* Clamped so a long ingredient list cannot push recipes out of view. */}
       <p
-        className="my-[5px] line-clamp-2 text-[9px] leading-[1.4] text-[#6b7665]"
+        className="my-[5px] line-clamp-2 text-[9px] leading-[1.4] text-[#625d59]"
         title={summary}
       >
         {summary}
@@ -81,14 +81,14 @@ export function ScenarioNode({ data, selected }: NodeProps<ScenarioFlowNode>) {
             e.makeable &&
             !evaluate(e.recipe, parent.state)?.makeable
           return (
-            <li key={e.recipe.id} className="border-t border-[#e8ebdf] py-[5px]">
+            <li key={e.recipe.id} className="border-t border-[#e4e1de] py-[5px]">
               <div
                 className="truncate text-[11px] leading-tight font-semibold"
                 title={e.recipe.name}
               >
                 {e.recipe.name}
               </div>
-              <div className="mt-0.5 flex flex-wrap gap-1 text-[9px] text-[#737a69]">
+              <div className="mt-0.5 flex flex-wrap gap-1 text-[9px] text-[#625d59]">
                 {DIFFICULTY_LABELS[e.recipe.difficulty]} ·{' '}
                 <span className={e.makeable ? 'font-[750] text-ready' : ''}>
                   {e.makeable
@@ -96,7 +96,7 @@ export function ScenarioNode({ data, selected }: NodeProps<ScenarioFlowNode>) {
                     : `${e.changesNeeded} ${e.changesNeeded === 1 ? 'change' : 'changes'} away`}
                 </span>
                 {isNew && (
-                  <span className={`${badge} bg-[#f1ead2] text-[#785323]`}>
+                  <span className={`${badge} bg-[#ffe2e4] text-[#a51521]`}>
                     New
                   </span>
                 )}
@@ -112,7 +112,7 @@ export function ScenarioNode({ data, selected }: NodeProps<ScenarioFlowNode>) {
           )
         })}
         {!top.length && (
-          <li className="border-t border-[#e8ebdf] py-[5px]">
+          <li className="border-t border-[#e4e1de] py-[5px]">
             No recipes for these cuisines.
           </li>
         )}
@@ -120,7 +120,7 @@ export function ScenarioNode({ data, selected }: NodeProps<ScenarioFlowNode>) {
 
       <div className="border-t border-line-soft pt-[5px]">
         {scenario.expanded ? (
-          <p className="text-[9px] leading-tight text-[#67795f]">
+          <p className="text-[9px] leading-tight text-[#625d59]">
             {scenario.note ?? 'Changes shown'}
           </p>
         ) : (
