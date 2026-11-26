@@ -2,8 +2,9 @@
 
 Version C explores recipe discovery through three short questions about adding
 an ingredient, using another tool, and trying a harder recipe. See one focused
-recommendation and optional alternatives, all respecting your answers and
-requiring at most one change. See [the prototype walkthrough](docs/PROTOTYPE.md).
+recommendation and optional alternatives ranked by the fewest changes needed.
+Answers prioritize similar matches without hiding recipes with missing items.
+See [the prototype walkthrough](docs/PROTOTYPE.md).
 
 ## Run locally
 

@@ -17,9 +17,9 @@ interface ExplorerProps {
 }
 
 const questions = [
-  { key: 'ingredient', title: 'Can you add one ingredient?', description: 'We can suggest a recipe that needs one ingredient beyond what you have.', yes: 'Yes, I can get one ingredient', no: 'No, use what I have' },
-  { key: 'equipment', title: 'Could you use another kitchen tool?', description: 'For example, you might be able to borrow a steamer or use an oven.', yes: 'Yes, I can access another tool', no: 'No, keep my current tools' },
-  { key: 'difficulty', title: 'Would you try a harder recipe?', description: 'We can include recipes one level above your current difficulty limit.', yes: 'Yes, one level harder is okay', no: 'No, stay within my limit' },
+  { key: 'ingredient', title: 'Are you open to adding ingredients?', description: 'We will show the closest recipes either way. Your answer helps prioritize similar matches.', yes: 'Yes, I can get more ingredients', no: 'I prefer to use what I have' },
+  { key: 'equipment', title: 'Could you use another kitchen tool?', description: 'For example, you might be able to borrow a steamer or use an oven.', yes: 'Yes, I can access another tool', no: 'I prefer to use my current tools' },
+  { key: 'difficulty', title: 'Would you try a harder recipe?', description: 'Your answer helps prioritize recipes around your preferred difficulty.', yes: 'Yes, I am open to harder recipes', no: 'I prefer my current difficulty limit' },
 ] as const
 
 export function PrototypeExplorer(props: ExplorerProps) {
@@ -67,7 +67,7 @@ export function PrototypeExplorer(props: ExplorerProps) {
               {guide.step === 2 ? 'Find my recipe' : 'Continue'}
             </button>
           </div>
-          <p className={`${hint} mt-4`}>Your recipe will need at most one change in total. Pantry basics are assumed.</p>
+          <p className={`${hint} mt-4`}>Recipes needing the fewest changes come first. Your answers help prioritize similar matches, rather than hide recipes. Pantry basics are assumed.</p>
         </>
       ) : (
         <>
@@ -76,7 +76,7 @@ export function PrototypeExplorer(props: ExplorerProps) {
           <ul className="mb-4 flex flex-wrap gap-2 text-xs">
             {questions.map((item) => (
               <li key={item.key} className="rounded-md bg-sage px-3 py-2">
-                {item.key === 'ingredient' ? 'Add an ingredient' : item.key === 'equipment' ? 'Use another tool' : 'Try one level harder'}: {guide.answers[item.key] ? 'Yes' : 'No'}
+                {item.key === 'ingredient' ? 'Add ingredients' : item.key === 'equipment' ? 'Use another tool' : 'Try harder recipes'}: {guide.answers[item.key] ? 'Yes' : 'Prefer not to'}
               </li>
             ))}
           </ul>
@@ -85,12 +85,12 @@ export function PrototypeExplorer(props: ExplorerProps) {
             <button className={button} type="button" onClick={() => dispatch({ type: 'restart' })}>Start over</button>
           </div>
           {!recommendation ? (
-            <p className={notice}>No recipes fit these answers with at most one change. Edit your answers, or update your kitchen on the left and choose Find recipes.</p>
+            <p className={notice}>No recipes are available for these cuisines. Choose another cuisine in your kitchen and select Find recipes.</p>
           ) : (
             <>
               <p className="mb-4 rounded-lg bg-sage p-4 text-sm text-moss">
                 <strong>{requiredChange(recommendation)}</strong>{' '}
-                {recommendation.makeable ? 'This is your highest-ranked recipe that is ready to cook.' : 'This is your highest-ranked recipe within the changes you allowed.'}
+                {recommendation.makeable ? 'You can cook this recipe now.' : 'This is one of your closest recipes. It still needs the changes listed above, even if you preferred to avoid them.'}
               </p>
               <fieldset className="mb-4 flex flex-wrap gap-3 text-xs">
                 <legend className="mb-2 font-bold">Cooking instructions</legend>
@@ -109,7 +109,7 @@ export function PrototypeExplorer(props: ExplorerProps) {
                   onClick={() => dispatch({ type: 'alternatives' })}>
                   {guide.showAlternatives ? 'Hide alternatives' : `See alternatives (${candidates.length - 1})`}
                 </button>
-              ) : <p className={`${hint} mt-4`}>This is the only match. Edit your answers to explore other options.</p>}
+              ) : <p className={`${hint} mt-4`}>This is the only recipe available for these cuisines. Choose another cuisine to explore more.</p>}
               {guide.showAlternatives && (
                 <section id="guided-alternatives" aria-label="Alternative recipes" className="mt-2 grid gap-4 min-[1101px]:grid-cols-2">
                   {candidates.slice(1).map((evaluation) => (

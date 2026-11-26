@@ -33,10 +33,12 @@ export function guideReducer(state: GuideState, action: GuideAction): GuideState
 
 export function guidedCandidates(recipes: readonly Recipe[], filters: FilterState, answers: Answers) {
   if (Object.values(answers).some((answer) => answer === null)) return []
-  return rank(recipes, filters).filter((e) =>
-    e.changesNeeded <= 1 &&
-    (e.missingIngredients.length === 0 || answers.ingredient) &&
-    (e.missingEquipment.length === 0 || answers.equipment) &&
-    (e.difficultyOver === 0 || answers.difficulty),
+  const preferenceGap = (e: ReturnType<typeof rank>[number]) =>
+    (answers.ingredient ? 0 : e.missingIngredients.length) +
+    (answers.equipment ? 0 : e.missingEquipment.length) +
+    (answers.difficulty ? 0 : e.difficultyOver)
+  // Closest recipes come first. Answers break ties without hiding options.
+  return rank(recipes, filters).sort((a, b) =>
+    a.changesNeeded - b.changesNeeded || preferenceGap(a) - preferenceGap(b) || b.score - a.score,
   )
 }
