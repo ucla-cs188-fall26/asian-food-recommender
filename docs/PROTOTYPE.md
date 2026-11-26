@@ -3,12 +3,15 @@
 Branch: `prototype-recipe-cards`. Based on the refined branching-map commit `3ab8d9a`.
 
 Run `npm install` once, then `npm run dev`. The Explore page replaces the map
-with Ready now and One change away groups. Each card names the needed change;
-recipes requiring multiple changes are available through a separate browse button.
+with Ready now and a group showing the fewest changes among recipes that are
+not ready yet. Its heading updates to 1 change away, 2 changes away, or whatever
+minimum is needed. All recipes tied at that minimum appear. Each card lists all
+needed changes; recipes requiring more than the minimum are available through
+a separate browse button.
 Recipe instructions, beginner/concise steps, bookmarks, and live/sample data remain available.
 
 Walkthrough: choose Korean; enter tofu, egg, soy sauce, garlic; select stove and
-Easy, then Find recipes. Locate Dubu Jorim in One change away with Add potato.
+Easy, then Find recipes. Locate Dubu Jorim in 1 change away with Add potato.
 Open its ingredient amounts and cooking steps. Add potato to the kitchen and
 resubmit: it moves to Ready now. Try saving it and visiting Saved recipes.
 

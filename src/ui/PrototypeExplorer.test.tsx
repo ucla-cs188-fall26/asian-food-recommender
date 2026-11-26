@@ -19,7 +19,7 @@ test('groups dishes by readiness without hiding the required change', () => {
       { ...base, id: 3, name: 'Two additions', requiredIngredients: ['tofu', 'potato', 'egg'] }]}
     experience="beginner" onExperienceChange={() => {}} bookmarks={[]} onToggleBookmark={() => {}} />)
   const ready = html.indexOf('Ready tofu')
-  const oneChange = html.indexOf('aria-label="One change away"')
+  const oneChange = html.indexOf('aria-label="1 change away"')
   expect(ready).toBeGreaterThan(html.indexOf('aria-label="Ready now"'))
   expect(ready).toBeLessThan(oneChange)
   expect(html.indexOf('Potato tofu')).toBeGreaterThan(oneChange)
@@ -41,5 +41,39 @@ test('empty groups explain how to continue', () => {
   const html = renderToStaticMarkup(<PrototypeExplorer filters={filters} recipes={[]} experience="beginner"
     onExperienceChange={() => {}} bookmarks={[]} onToggleBookmark={() => {}} />)
   expect(html).toContain('Nothing is ready yet.')
-  expect(html).toContain('No recipes are exactly one change away.')
+  expect(html).toContain('No recipes match these cuisines.')
+  expect(html).not.toContain('Infinity')
+})
+
+test('shows every recipe tied for the fewest changes, even when that minimum is two', () => {
+  const html = renderToStaticMarkup(<PrototypeExplorer filters={filters}
+    recipes={[base,
+      { ...base, id: 2, name: 'Two ingredients', requiredIngredients: ['tofu', 'potato', 'egg'] },
+      { ...base, id: 3, name: 'Ingredient and tool', requiredIngredients: ['tofu', 'potato'], requiredEquipment: ['oven'] },
+      { ...base, id: 4, name: 'Three additions', requiredIngredients: ['tofu', 'potato', 'egg', 'garlic'] }]}
+    experience="beginner" onExperienceChange={() => {}} bookmarks={[]} onToggleBookmark={() => {}} />)
+  expect(html).toContain('aria-label="2 changes away"')
+  expect(html).toContain('Two ingredients')
+  expect(html).toContain('Ingredient and tool')
+  expect(html).toContain('Add potato, egg.')
+  expect(html).toContain('Add potato; Use oven.')
+  expect(html).not.toContain('Three additions')
+  expect(html).toContain('Browse recipes needing more changes')
+})
+
+test('with no ready recipes the minimum can exceed two and the browse button is absent without further options', () => {
+  const html = renderToStaticMarkup(<PrototypeExplorer filters={filters}
+    recipes={[{ ...base, requiredIngredients: ['tofu', 'potato', 'egg', 'garlic'] }]}
+    experience="beginner" onExperienceChange={() => {}} bookmarks={[]} onToggleBookmark={() => {}} />)
+  expect(html).toContain('aria-label="3 changes away"')
+  expect(html).toContain('Add potato, egg, garlic.')
+  expect(html).not.toContain('Browse recipes needing more changes')
+})
+
+test('all-ready collections explain that there are no unfinished recipes', () => {
+  const html = renderToStaticMarkup(<PrototypeExplorer filters={filters} recipes={[base]}
+    experience="beginner" onExperienceChange={() => {}} bookmarks={[]} onToggleBookmark={() => {}} />)
+  expect(html).toContain('All matching recipes are ready to cook above.')
+  expect(html).not.toContain('Infinity')
+  expect(html).not.toContain('Browse recipes needing more changes')
 })

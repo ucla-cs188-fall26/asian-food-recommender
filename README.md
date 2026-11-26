@@ -1,8 +1,10 @@
 # Asian Recipe Explorer
 
 Version B explores recipe discovery through comparison cards grouped into
-Ready now and One change away. Each card explains the exact ingredient, tool,
-or difficulty change needed. Browse recipes needing more changes on demand.
+Ready now and the closest recipes needing changes. The second group shows the
+minimum number of changes currently needed, such as 2 changes away. Each card
+lists all missing ingredients, tools, and difficulty changes. Browse recipes
+needing more changes on demand.
 See [the prototype walkthrough](docs/PROTOTYPE.md).
 
 ## Run locally

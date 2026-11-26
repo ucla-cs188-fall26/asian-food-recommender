@@ -19,10 +19,15 @@ export interface ExplorerProps {
 export function PrototypeExplorer(props: ExplorerProps) {
   const [showMore, setShowMore] = useState(false)
   const evaluations = rank(props.recipes, props.filters)
+  const notReady = evaluations.filter((e) => !e.makeable)
+  const minimumChanges = notReady.reduce((minimum, e) => Math.min(minimum, e.changesNeeded), Infinity)
+  const closestTitle = Number.isFinite(minimumChanges)
+    ? `${minimumChanges} ${minimumChanges === 1 ? 'change' : 'changes'} away`
+    : 'Closest recipes'
   const groups = [
-    { title: 'Ready now', items: evaluations.filter((e) => e.makeable), empty: 'Nothing is ready yet. Check the one-change options below.' },
-    { title: 'One change away', items: evaluations.filter((e) => e.changesNeeded === 1), empty: 'No recipes are exactly one change away. Update your kitchen or browse recipes needing more changes.' },
-    ...(showMore ? [{ title: 'More changes needed', items: evaluations.filter((e) => e.changesNeeded > 1), empty: 'No other recipes match these cuisines.' }] : []),
+    { title: 'Ready now', items: evaluations.filter((e) => e.makeable), empty: 'Nothing is ready yet. Check the closest recipes below.' },
+    { title: closestTitle, items: notReady.filter((e) => e.changesNeeded === minimumChanges), empty: evaluations.length ? 'All matching recipes are ready to cook above.' : 'No recipes match these cuisines. Try another cuisine.' },
+    ...(showMore ? [{ title: 'More changes needed', items: notReady.filter((e) => e.changesNeeded > minimumChanges), empty: 'No other recipes match these cuisines.' }] : []),
   ]
   return (
     <>
@@ -44,7 +49,7 @@ export function PrototypeExplorer(props: ExplorerProps) {
             {group.items.map((evaluation) => (
               <div key={recipeKey(evaluation.recipe)} className="min-w-0">
                 <p className="mb-2 rounded-md bg-sage p-3 text-xs font-semibold text-moss">
-                  {evaluation.changesNeeded > 1 ? `${evaluation.changesNeeded} changes needed. See details below.` : requiredChange(evaluation)}
+                  {requiredChange(evaluation)}
                 </p>
                 <RecipeCard evaluation={evaluation} experience={props.experience}
                   saved={props.bookmarks.some((recipe) => recipeKey(recipe) === recipeKey(evaluation.recipe))}
@@ -54,7 +59,7 @@ export function PrototypeExplorer(props: ExplorerProps) {
           </div>
         </section>
       ))}
-      {!showMore && evaluations.some((e) => e.changesNeeded > 1) && (
+      {!showMore && notReady.some((e) => e.changesNeeded > minimumChanges) && (
         <button className={button} type="button" onClick={() => setShowMore(true)}>Browse recipes needing more changes</button>
       )}
       <p className={`${hint} mt-4`}>A change means one added ingredient, one tool, or one difficulty level. Pantry basics are assumed.</p>
