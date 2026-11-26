@@ -1,16 +1,16 @@
 # Asian Recipe Explorer
 
-Explore recipes through a graph of small changes to your kitchen constraints.
-Each edge adds exactly one ingredient or piece of equipment, or raises the
-maximum difficulty by one level, showing which recipes that change opens up.
-Select a scenario for ranked recipes, missing items, substitutions and steps.
+Version B explores recipe discovery through comparison cards grouped into
+Ready now and One change away. Each card explains the exact ingredient, tool,
+or difficulty change needed. Browse recipes needing more changes on demand.
+See [the prototype walkthrough](docs/PROTOTYPE.md).
 
 ## Run locally
 
 Prerequisites: Node.js 22 or later and npm.
 
 ```sh
-git checkout prototype
+git checkout prototype-recipe-cards
 npm install
 npm run dev
 ```
@@ -37,7 +37,7 @@ The team's free-plan budget is 50 points per day; each cuisine load costs
 about 3. Start with one cuisine for a live check. Already loaded cuisine data
 is cached in memory for the page session only. Reloading clears that cache.
 
-## Core scenario walkthrough
+## Original branching-map walkthrough (on the `prototype` branch)
 
 1. Select **Korean** only.
 2. Set ingredients to **tofu, egg, soy sauce, garlic**, equipment to **stove**,
